@@ -1,4 +1,9 @@
 #!/bin/sh
+echo "Jenkins Environment Variables"
+echo "============================="
+echo "BUILD_URL=$BUILD_URL"
+echo "BUILD_TAG=$BUILD_TAG"
+echo ""
 if [ `uname` == "Darwin" ] ; then
   alias md5sum='md5 -r'
 else
@@ -24,6 +29,8 @@ for n in $(seq 1 $WORK) ; do
 done
 echo " done"
 echo "[$(date),pid=$$] Finished probe $PROBE: $RANDOM" | tee -a "$DELTA" >> "$PROBE"
+echo "[$(date),pid=$$] BUILD_URL=$BUILD_URL" | tee -a "$DELTA" >> "$PROBE"
+echo "[$(date),pid=$$] BUILD_TAG=$BUILD_TAG" | tee -a "$DELTA" >> "$PROBE"
 PROBE_MD5=$(md5sum "$PROBE" | sed -e "s/\(^.*\) .*/\1/")
 DELTA_MD5=$(md5sum "$DELTA" | sed -e "s/\(^.*\) .*/\1/")
 echo "Probe $PROBE hash found: $PROBE_MD5 expecting: $DELTA_MD5"
