@@ -1,8 +1,8 @@
 #!/bin/sh
 if [ `uname` == "Darwin" ] ; then
-  alias md5sum='md5 -q'
+  alias md5sum='md5 -r'
 else
-  alias md5sum='md5sum --quiet'
+  alias md5sum='md5sum'
 fi
 if [ "A$1" == "A" ] ; then
   echo "You must supply the name of the file to use as a probe"
@@ -24,8 +24,8 @@ for n in $(seq 1 $WORK) ; do
 done
 echo " done"
 echo "[$(date),pid=$$] Finished probe $PROBE: $RANDOM" | tee -a "$DELTA" >> "$PROBE"
-PROBE_MD5=$(md5sum "$PROBE")
-DELTA_MD5=$(md5sum "$DELTA")
+PROBE_MD5=$(md5sum "$PROBE" | sed -e "s/\(^.*\) .*/\1/")
+DELTA_MD5=$(md5sum "$DELTA" | sed -e "s/\(^.*\) .*/\1/")
 echo "Probe $PROBE hash found: $PROBE_MD5 expecting: $DELTA_MD5"
 
 rm -f "$DELTA"
